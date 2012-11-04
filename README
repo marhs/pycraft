@@ -1,25 +1,19 @@
 Pycraft:
 Marco Herrero <hielo.helado@gmail.com>
 GPLv3
- Conjunto de utilidades para tratar los logs de un servidor de minecraft
- A implementar:
-  Limpiador de logs: Elimina lineas como "Connection reset" o intentos 
-                     fallidos de conexiones conocidas. Hace que el log
-                     ocupe menos espacio y sea mas sencillo de leer.
-  Recolector de ips/jugador: Relaciona cada ip con un jugador, avisa si
-                             varios jugadores se conectan desde una 
-                             misma ip. Registra esas ips.
-  Query a logs: Permite hacer consultas/querys a los logs. Por ejemplo
-    get chat [jugador1, jugador2, ...] fechainicio fechafin
-    get connections ip jugador
-    get connections location jugador
+Conjunto de utilidades para tratar los logs de un servidor de minecraft
+
+Ordenes por linea de comandos:
+    -r              Repeticiones de ip de distintos usuarios
+    -i user         Lista nombre-ip de todos los jugadores/jugador user 
+    -m user1..      Mensajes de los usuarios user1, user2, etc (o solo 1)
+    --clean ip      Limpia el registro de
+                        Connection reset
+                        \ip Lost connection.
+    -d date         Muestra el log para una fecha determinada
+    -h hour         Muestra el log para una hora determinada
+                    Tanto -d como -h se deben poder usar con los otros 
+                    comandos. P.ej: pycraft -m helmetk -d 2012-11-21
  
- Diccionario donde guardar la relacion usuario, ips
-     {user: [ip1,ip2,...]}
-     Diccionario de diciconarios?
-     [user:
-          [ip1: {2/03/12 11:32,
-                 4/05/09 21:12}],
-          [ip2: {3/05/11 01:44}]]
-     El problema de esto es encontrar las repeticiones de ip.
-     Como porej: user1.getIps.consigueRepeticiones(user2.ips)
+
+
