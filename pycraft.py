@@ -4,10 +4,14 @@
 #  - 
 import gzip
 import re
+import os
 
 nombreLog = 'server_2012-10-06.log.gz'
+nombreDir = 'logs'
+logs = os.listdir(nombreDir)
 log = ""
 fileContent = b''
+dict = {}
 
 # Expresiones regulares
 
@@ -20,13 +24,13 @@ def abrir(nombreLog):
     f = gzip.open(nombreLog)
     fileContent = f.read()
     f.close()
-    return fileContent
+    expresion = r'\n'
+    log = re.split(expresion, fileContent.decode())
+    return log
 
-fileContent = abrir(nombreLog)
+log = abrir(nombreLog)
 
 # Recorrer la variable y almacenar en una lista las lineas. 
-expresion = r'\n'
-log = re.split(expresion, fileContent.decode())
 def eliminaIp(listaLog, ip):
 # Elimina las lines donde aparezcan la ip, asi como las Connection reset.
     expIp = '.*/' + ip
@@ -65,7 +69,6 @@ def userIP(lista, user):
     return res 
 
 def usersConnections(log):
-    dict = {}
     aux = []
 # Devuelve todas las lineas con una conexion 
     exp = '([a-zA-Z0-9]*)\[' # helmetk[/XXX.XXX.XXX.XXX:XXXXX] logged in 
@@ -76,7 +79,7 @@ def usersConnections(log):
             else:
                 aux = {checkConnection(l)[8]}
                 dict[checkConnection(l)[7]] = aux
-    return dict
+    return True
         
 def checkConnection(line):
     exp = r'([a-zA-z0-9]*)\[.(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})'
@@ -91,7 +94,10 @@ def checkLine(linea, exp):
 def muestra(lista):
     for k, r in lista.items():
         print(k+"\n    "+str(r))
+for l in logs:
+    log = abrir(nombreDir + '/' + l)
+    usersConnections(log)
 
-muestra(usersConnections(log))
+muestra(dict)
 # pec = eliminaIp(log, '74.86.158.10*') 
 # save(pec, 'prueba.gz')
