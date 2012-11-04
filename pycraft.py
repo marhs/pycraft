@@ -5,6 +5,24 @@
 import gzip
 import re
 import os
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", "--ip", help="Muestra las ips de los usuarios")
+    parser.add_argument("-u", "--user", help="Filtra por usuario")
+    
+    args = parser.parse_args()
+
+    if args.ip:
+        for l in logs:
+            log = abrir(nombreDir + '/' + l)
+            if args.user == None:
+                usersConnections(log)
+            else:
+                usersConnections(log, args.user)
+    else:
+        print("AYUDAME")
 
 nombreLog = 'server_2012-10-06.log.gz'
 nombreDir = 'logs'
@@ -68,17 +86,21 @@ def userIP(lista, user):
 
     return res 
 
-def usersConnections(log):
+def usersConnections(log, user=""):
     aux = []
 # Devuelve todas las lineas con una conexion 
     exp = r'([a-zA-z0-9]*)\[.(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})' # helmetk[/XXX.XXX.XXX.XXX:XXXXX] logged in 
     for l in log:
         if checkLine(l, exp):
+            aux = {checkConnection(l)[8]}
             if checkConnection(l)[7] in dict:
                 dict[checkConnection(l)[7]].add(checkConnection(l)[8])
+            elif user == "":
+                dict[checkConnection(l)[7]] = aux 
             else:
-                aux = {checkConnection(l)[8]}
-                dict[checkConnection(l)[7]] = aux
+                if checkConnection(l)[7] == user:
+                    dict[checkConnection(l)[7]] = aux
+
     return True
         
 def checkConnection(line):
@@ -94,10 +116,8 @@ def checkLine(linea, exp):
 def muestra(lista):
     for k, r in lista.items():
         print(k+"\n    "+str(r))
-for l in logs:
-    log = abrir(nombreDir + '/' + l)
-    usersConnections(log)
 
+main()
 muestra(dict)
 # pec = eliminaIp(log, '74.86.158.10*') 
 # save(pec, 'prueba.gz')
