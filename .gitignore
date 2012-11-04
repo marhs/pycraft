@@ -2,3 +2,7 @@
 __pycache__/pycraft.cpython-33.pyc
 
 *.gz
+
+*.swp
+
+.pycraft.py.swp
