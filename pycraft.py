@@ -71,7 +71,7 @@ def userIP(lista, user):
 def usersConnections(log):
     aux = []
 # Devuelve todas las lineas con una conexion 
-    exp = '([a-zA-Z0-9]*)\[' # helmetk[/XXX.XXX.XXX.XXX:XXXXX] logged in 
+    exp = r'([a-zA-z0-9]*)\[.(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})' # helmetk[/XXX.XXX.XXX.XXX:XXXXX] logged in 
     for l in log:
         if checkLine(l, exp):
             if checkConnection(l)[7] in dict:
