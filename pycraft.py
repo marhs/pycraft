@@ -10,6 +10,8 @@ import argparse
 def main():
 # Función principal. 
 # TODO Diferenciar cuando devolvemos un diccionario y cuando una lista
+#      Hacer que ip funcione poniendo solo -i, sin tener que poner -i whatever
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--ip", help="Muestra las ips de los usuarios")
     parser.add_argument("-u", "--user", help="Filtra por usuario")
@@ -22,8 +24,10 @@ def main():
             if args.user == None:
                 usersConnections(log)
             else:
-                usersConnections(log, args.user)
-    if args.connections:
+                usersConnections(log, args.user)       
+        muestra(dict)
+
+    elif args.connections:
         for l in logs:
             log = abrir(nombreDir + '/' + l)
             muestraLista(userConnections(log, args.connections))
@@ -33,7 +37,6 @@ def main():
 nombreLog = 'server_2012-10-06.log.gz'
 nombreDir = 'logs'
 logs = os.listdir(nombreDir)
-log = ""
 fileContent = b''
 dict = {}
 lis = []
@@ -44,16 +47,14 @@ fechaEx = '^(\d{4})-(\d{2})-(\d{2})\s' # Formato 2012-11-31
 horaEx = '(\d{2}):(\d{2}):(\d{2})\s'   # Formato 22:11:00
 etiquetaEx = '\[([A-Z_]\w*)\]\s'      # Formato [INFO]
 
-def abrir(nombreLog):
+def abrir(nombre):
 # Carga en memoria del log. 
-    f = gzip.open(nombreLog)
+    f = gzip.open(nombre)
     fileContent = f.read()
     f.close()
     expresion = r'\n'
     log = re.split(expresion, fileContent.decode())
     return log
-
-log = abrir(nombreLog)
 
 # Recorrer la variable y almacenar en una lista las lineas. 
 def eliminaIp(listaLog, ip):
@@ -115,7 +116,8 @@ def userConnections(log, user):
     auxi = []
     for l in log:
         if checkLine(l, exp) and checkConnection(l)[7] == user:
-            auxi.append(l)
+            a = checkConnection(l)
+            auxi.append(a[0]+"-"+a[1]+"-"+a[2]+" "+a[3]+":"+a[4]+":"+a[5]+" - "+a[8])
     return auxi
          
 
