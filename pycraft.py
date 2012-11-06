@@ -28,9 +28,18 @@ def main():
     parser.add_argument("-i", "--ip", help="Muestra las ips de los usuarios")
     parser.add_argument("-u", "--user", help="Filtra por usuario")
     parser.add_argument("-c", "--connections", help="Muestra los intentos de conexion de un usuario")
+    parser.add_argument("-x", "--xon", help="Muestra los usuarios que se han conectado con cada ip")
     args = parser.parse_args()
-
-    if args.ip:
+    
+    if args.xon:
+        for l in logs:
+            log = abrir(nombreDir + '/' + l)
+            if args.user == None:
+                ipUsers(log)
+            else:
+                ipUsers(log, args.user)
+        muestra(dict)
+    elif args.ip:
         for l in logs:
             log = abrir(nombreDir + '/' + l)
             if args.user == None:
@@ -134,10 +143,27 @@ def checkLine(linea, exp):
     ex = fechaEx + horaEx + etiquetaEx + exp
     return re.match(ex, linea) != None
 
+def ipUsers(log, ip=""):
+    exp = r'([a-zA-z0-9]*)\[.(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})'
+    for l in log:
+        if checkLine(l, exp):
+            a = checkConnection(l)
+            aux = {a[7]}
+            if a[8] in dict:
+                dict[a[8]].add(a[7])
+            elif ip == "":
+                dict[a[8]] = aux 
+            else:
+                if a[8] == ip:
+                    dict[a[8]] = aux
+    return True
+
+       
+
 # ZONA DE PRUEBAS 
 def muestra(lista):
     for k, r in lista.items():
-        print(k+"\n    "+str(r))
+        print(k+": "+str(r))
 
 def muestraLista(lista):
     for l in lista:
