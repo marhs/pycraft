@@ -7,6 +7,18 @@ import re
 import os
 import argparse
 
+nombreDir = 'logs'
+logs = os.listdir(nombreDir)
+fileContent = b''
+dict = {}
+lis = []
+
+# Expresiones regulares
+
+fechaEx = '^(\d{4})-(\d{2})-(\d{2})\s' # Formato 2012-11-31
+horaEx = '(\d{2}):(\d{2}):(\d{2})\s'   # Formato 22:11:00
+etiquetaEx = '\[([A-Z_]\w*)\]\s'      # Formato [INFO]
+
 def main():
 # Función principal. 
 # TODO Diferenciar cuando devolvemos un diccionario y cuando una lista
@@ -15,7 +27,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--ip", help="Muestra las ips de los usuarios")
     parser.add_argument("-u", "--user", help="Filtra por usuario")
-    parser.add_argument("-c", "--connections", help="Muestra conexiones")
+    parser.add_argument("-c", "--connections", help="Muestra los intentos de conexion de un usuario")
     args = parser.parse_args()
 
     if args.ip:
@@ -32,20 +44,9 @@ def main():
             log = abrir(nombreDir + '/' + l)
             muestraLista(userConnections(log, args.connections))
     else:
+# TODO Muestra la ayuda si se ejecuta sin argumentos/muestra un resumen de los logs cargados
         print("AYUDAME")
 
-nombreLog = 'server_2012-10-06.log.gz'
-nombreDir = 'logs'
-logs = os.listdir(nombreDir)
-fileContent = b''
-dict = {}
-lis = []
-
-# Expresiones regulares
-
-fechaEx = '^(\d{4})-(\d{2})-(\d{2})\s' # Formato 2012-11-31
-horaEx = '(\d{2}):(\d{2}):(\d{2})\s'   # Formato 22:11:00
-etiquetaEx = '\[([A-Z_]\w*)\]\s'      # Formato [INFO]
 
 def abrir(nombre):
 # Carga en memoria del log. 
@@ -108,7 +109,6 @@ def usersConnections(log, user=""):
             else:
                 if checkConnection(l)[7] == user:
                     dict[checkConnection(l)[7]] = aux
-
     return True
 
 def userConnections(log, user):
@@ -117,7 +117,7 @@ def userConnections(log, user):
     for l in log:
         if checkLine(l, exp) and checkConnection(l)[7] == user:
             a = checkConnection(l)
-            auxi.append(a[0]+"-"+a[1]+"-"+a[2]+" "+a[3]+":"+a[4]+":"+a[5]+" - "+a[8])
+            auxi.append(a[8]+" - "+a[2]+"-"+a[1]+"-"+a[0]+" "+a[3]+":"+a[4]+":"+a[5])
     return auxi
          
 
