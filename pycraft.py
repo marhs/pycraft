@@ -22,13 +22,12 @@ etiquetaEx = '\[([A-Z_]\w*)\]\s'      # Formato [INFO]
 def main():
 # Función principal. 
 # TODO Diferenciar cuando devolvemos un diccionario y cuando una lista
-#      Hacer que ip funcione poniendo solo -i, sin tener que poner -i whatever
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--ip", help="Muestra las ips de los usuarios")
+    parser.add_argument("-i", "--ip", action="store_true", help="Muestra las ips de los usuarios")
     parser.add_argument("-u", "--user", help="Filtra por usuario")
     parser.add_argument("-c", "--connections", help="Muestra los intentos de conexion de un usuario")
-    parser.add_argument("-x", "--xon", help="Muestra los usuarios que se han conectado con cada ip")
+    parser.add_argument("-x", "--xon", action="store_true", help="Muestra los usuarios que se han conectado con cada ip")
     args = parser.parse_args()
     
     if args.xon:
