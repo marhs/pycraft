@@ -3,6 +3,8 @@ Marco Herrero <hielo.helado@gmail.com>
 GPLv3
 Conjunto de utilidades para tratar los logs de un servidor de minecraft
 
+(Por ahora el sistema está en desarrollo, la mayoria de estas opciones no funcionan aun, pero pronto lo estarán :D )
+
 Ordenes por linea de comandos:
     -r              Repeticiones de ip de distintos usuarios
     -i user         Lista nombre-ip de todos los jugadores/jugador user 
