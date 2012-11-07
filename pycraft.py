@@ -29,7 +29,7 @@ def main():
     parser.add_argument("-c", "--connections", help="Muestra los intentos de conexion de un usuario")
     parser.add_argument("-x", "--xon", action="store_true", help="Muestra los usuarios que se han conectado con cada ip")
     args = parser.parse_args()
-    
+# Esto no me gusta nada, tengo que cambiarlo para que sea mas eficiente.     
     if args.xon:
         for l in logs:
             log = abrir(nombreDir + '/' + l)
