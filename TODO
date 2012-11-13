@@ -1,0 +1,5 @@
+Cifrado:
+    Posibilidad de cifrar los logs mediante claves RSA (o DSA) para impedir la modificación de estos sin la clave correspondiente
+    Pertenece al apartado "modificacion" (es decir, borra los logs antiguos y crea una copia del nuevo, pero ya cifrado
+    Trabajar con logs cifrados (descifrar, modificar, cifrar).
+
